@@ -509,7 +509,15 @@ def handle_callbacks(call):
 if __name__ == "__main__":
     print("🤖 البوت يعمل بكفاءة وقاعدة البيانات SQLite متصلة...")
 
-    bot.infinity_polling(
-        skip_pending=True,
-        allowed_updates=["message", "callback_query", "chat_member"]
-    )
+    while True:
+        try:
+            bot.infinity_polling(
+                skip_pending=True,
+                allowed_updates=["message", "callback_query", "chat_member"],
+                timeout=20,
+                long_polling_timeout=10
+            )
+        except Exception as e:
+            print(f"⚠️ حدث خطأ في الاتصال بالسيرفر أو البروكسي: {e}")
+            print("🔄 إعادة المحاولة خلال 5 ثوانٍ...")
+            time.sleep(5)
