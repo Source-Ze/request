@@ -1,14 +1,20 @@
 import time
 import sqlite3
 import telebot
-from telebot import types
+from telebot import types, apihelper
 from telebot.types import ChatMemberUpdated
 
 # =============================================================
 # 1. Configuration (الإعدادات الأساسية)
 # =============================================================
-BOT_TOKEN = "8801995096:AAEYIN4YIa5Z_j65qB1a8KJYyGU-uLRsvbY"  # ضع توكن البوت هنا من BotFather
-SUDO_ADMIN = 8155068892             # ضع الـ Telegram ID الخاص بك (المطور الأساسي)
+BOT_TOKEN = "8801995096:AAEYIN4YIa5Z_j65qB1a8KJYyGU-uLRsvbY"  # توكن البوت
+SUDO_ADMIN = 8155068892             # Telegram ID الخاص بالمطور الأساسي
+
+# 🔧 إعداد البروكسي الخاص بالحسابات المجانية في PythonAnywhere
+apihelper.proxy = {
+    'http': 'http://proxy.server:3128',
+    'https': 'http://proxy.server:3128'
+}
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -227,7 +233,6 @@ def start_cmd(message):
 
     temp_user_state[user_id] = {}
 
-    # الرسالة الترحيبية بعد التعديل المطلوب
     welcome_text = (
         "🏛️ **أهلاً بكم في: بوت جروب كلية الحاسبات والمعلومات** 💻✨\n\n"
         "الهدف من الجروب والبوت هو تبادل الخبرات الأكاديمية، المساعدة في المواد الدراسية، "
@@ -499,12 +504,11 @@ def handle_callbacks(call):
                 print(f"Error sending to admin {admin_id}: {e}")
 
 # =============================================================
-# 10. Execution (الطريقة الصحيحة والآمنة لتشغيل infinity_polling)
+# 10. Execution
 # =============================================================
 if __name__ == "__main__":
     print("🤖 البوت يعمل بكفاءة وقاعدة البيانات SQLite متصلة...")
 
-    # التشغيل المباشر لـ infinity_polling للتعامل مع انقطاع الشبكة بدون Loop أخطاء
     bot.infinity_polling(
         skip_pending=True,
         allowed_updates=["message", "callback_query", "chat_member"]
